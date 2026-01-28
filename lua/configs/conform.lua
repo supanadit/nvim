@@ -3,6 +3,9 @@ local options = {
     lua = { "stylua" },
     -- css = { "prettier" },
     -- html = { "prettier" },
+    ansible = { "ansible-lint" },
+    terraform = { "terraform_fmt" },
+    hcl = { "terraform_fmt" },
   },
 
   -- format_on_save = {

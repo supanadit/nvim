@@ -13,6 +13,69 @@ return {
     end,
   },
 
+  {
+    "b0o/SchemaStore.nvim",
+    lazy = true,
+  },
+
+  {
+    "antosha417/nvim-lsp-file-operations",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-tree/nvim-tree.lua", -- Ensures it hooks into NvimTree
+    },
+    event = "LspAttach",
+    config = function()
+      require("lsp-file-operations").setup()
+    end,
+  },
+
+  {
+    "nvim-treesitter/nvim-treesitter",
+    opts = {
+      ensure_installed = {
+        "vim",
+        "lua",
+        "vimdoc",
+        "html",
+        "css",
+        "typescript",
+        "tsx",
+        "javascript",
+        "dart",
+      },
+    },
+  },
+
+  {
+    "nvim-flutter/flutter-tools.nvim",
+    lazy = false,
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "stevearc/dressing.nvim", -- Optional: for better UI prompts
+    },
+    config = function()
+      require("flutter-tools").setup {
+        lsp = {
+          on_attach = require("nvchad.configs.lspconfig").on_attach,
+          capabilities = require("nvchad.configs.lspconfig").capabilities,
+          color_render = true, -- Shows colors in code
+          settings = {
+            showTodos = true,
+            completeFunctionCalls = true,
+          },
+        },
+        dev_log = {
+          enabled = true,
+          open_cmd = "tabedit", -- opens logs in a new tab
+        },
+        widget_guides = {
+          enabled = true, -- gives you those vertical lines for UI nesting
+        },
+      }
+    end,
+  },
+
   -- test new blink
   -- { import = "nvchad.blink.lazyspec" },
 
