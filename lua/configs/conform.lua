@@ -1,8 +1,8 @@
 local options = {
   formatters_by_ft = {
     lua = { "stylua" },
-    -- css = { "prettier" },
-    -- html = { "prettier" },
+    css = { "prettierd" },
+    html = { "prettierd" },
     ansible = { "ansible-lint" },
     terraform = { "terraform_fmt" },
     hcl = { "terraform_fmt" },
@@ -14,6 +14,10 @@ local options = {
     markdown = { "prettierd" },
     json = { "prettierd" },
     toml = { "taplo" },
+    javascript = { "prettierd" },
+    typescript = { "prettierd" },
+    javascriptreact = { "prettierd", "eslint_d" },
+    typescriptreact = { "prettierd", "eslint_d" },
   },
 
   -- format_on_save = {

@@ -31,6 +31,14 @@ return {
   },
 
   {
+    "windwp/nvim-ts-autotag",
+    ft = { "javascriptreact", "typescriptreact", "html" },
+    config = function()
+      require("nvim-ts-autotag").setup()
+    end,
+  },
+
+  {
     "nvim-treesitter/nvim-treesitter",
     opts = {
       ensure_installed = {
@@ -54,6 +62,11 @@ return {
         "toml",
       },
     },
+  },
+
+  {
+    "nvim-treesitter/nvim-treesitter-textobjects",
+    dependencies = "nvim-treesitter/nvim-treesitter",
   },
 
   {

@@ -9,6 +9,8 @@ local servers = {
   "html",
   "cssls",
   "ts_ls",
+  "eslint",
+  "tailwindcss",
   "yamlls",
   "ansiblels",
   "terraformls",
@@ -21,8 +23,10 @@ local servers = {
   "taplo",
 }
 
+local skip_setup = { yamlls = true, ansiblels = true, terraformls = true, gopls = true, bashls = true }
+
 for _, lsp in ipairs(servers) do
-  if lsp ~= "yamlls" and lsp ~= "ansiblels" and lsp ~= "terraformls" and lsp ~= "gopls" and lsp ~= "bashls" then
+  if not skip_setup[lsp] then
     vim.lsp.config(lsp, {
       on_attach = nvlsp.on_attach,
       on_init = nvlsp.on_init,
@@ -95,6 +99,12 @@ vim.lsp.config("jsonls", {
       validate = { enable = true },
     },
   },
+})
+
+vim.lsp.config("tailwindcss", {
+  on_attach = nvlsp.on_attach,
+  capabilities = nvlsp.capabilities,
+  filetypes = { "html", "javascriptreact", "typescriptreact", "css" },
 })
 
 vim.lsp.enable(servers)
