@@ -43,6 +43,15 @@ return {
         "tsx",
         "javascript",
         "dart",
+        "go",
+        "gomod",
+        "gowork",
+        "gosum",
+        "bash",
+        "dockerfile",
+        "json",
+        "jsonc",
+        "toml",
       },
     },
   },
@@ -54,6 +63,7 @@ return {
       "nvim-lua/plenary.nvim",
       "stevearc/dressing.nvim", -- Optional: for better UI prompts
     },
+
     config = function()
       require("flutter-tools").setup {
         lsp = {
@@ -73,6 +83,25 @@ return {
           enabled = true, -- gives you those vertical lines for UI nesting
         },
       }
+    end,
+  },
+
+  {
+    "MeanderingProgrammer/render-markdown.nvim",
+    ft = { "markdown" },
+    dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" },
+    config = function()
+      require("render-markdown").setup {}
+    end,
+  },
+
+  {
+    "iamcco/markdown-preview.nvim",
+    cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+    ft = { "markdown" },
+    build = "cd app && npm install", -- Manually trigger the npm install
+    init = function()
+      vim.g.mkdp_filetypes = { "markdown" }
     end,
   },
 

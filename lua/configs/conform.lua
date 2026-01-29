@@ -6,6 +6,14 @@ local options = {
     ansible = { "ansible-lint" },
     terraform = { "terraform_fmt" },
     hcl = { "terraform_fmt" },
+    go = { "goimports", "gofumpt" },
+    sh = { "shfmt" },
+    bash = { "shfmt" },
+    zsh = { "shfmt" },
+    dockerfile = { "prettierd" },
+    markdown = { "prettierd" },
+    json = { "prettierd" },
+    toml = { "taplo" },
   },
 
   -- format_on_save = {

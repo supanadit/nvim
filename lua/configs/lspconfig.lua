@@ -5,10 +5,24 @@ local nvlsp = require "nvchad.configs.lspconfig"
 local capabilities = nvlsp.capabilities
 
 -- Define the servers you want
-local servers = { "html", "cssls", "ts_ls", "yamlls", "ansiblels", "terraformls", "tflint" }
+local servers = {
+  "html",
+  "cssls",
+  "ts_ls",
+  "yamlls",
+  "ansiblels",
+  "terraformls",
+  "tflint",
+  "gopls",
+  "bashls",
+  "dockerls",
+  "marksman",
+  "jsonls",
+  "taplo",
+}
 
 for _, lsp in ipairs(servers) do
-  if lsp ~= "yamlls" and lsp ~= "ansiblels" and lsp ~= "terraformls" then
+  if lsp ~= "yamlls" and lsp ~= "ansiblels" and lsp ~= "terraformls" and lsp ~= "gopls" and lsp ~= "bashls" then
     vim.lsp.config(lsp, {
       on_attach = nvlsp.on_attach,
       on_init = nvlsp.on_init,
@@ -50,6 +64,37 @@ vim.lsp.config("terraformls", {
   capabilities = nvlsp.capabilities,
   -- This ensures the LSP starts for both .tf and .hcl files
   filetypes = { "terraform", "terraform-vars", "hcl" },
+})
+
+vim.lsp.config("gopls", {
+  on_attach = nvlsp.on_attach,
+  capabilities = nvlsp.capabilities,
+  settings = {
+    gopls = {
+      analyses = {
+        unusedparams = true,
+      },
+      staticcheck = true,
+      gofumpt = true, -- A stricter gofmt
+    },
+  },
+})
+
+vim.lsp.config("bashls", {
+  on_attach = nvlsp.on_attach,
+  capabilities = nvlsp.capabilities,
+  filetypes = { "sh", "zsh", "bash" },
+})
+
+vim.lsp.config("jsonls", {
+  on_attach = nvlsp.on_attach,
+  capabilities = nvlsp.capabilities,
+  settings = {
+    json = {
+      schemas = require("schemastore").json.schemas(),
+      validate = { enable = true },
+    },
+  },
 })
 
 vim.lsp.enable(servers)
