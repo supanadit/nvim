@@ -108,15 +108,15 @@ return {
     end,
   },
 
-  {
-    "iamcco/markdown-preview.nvim",
-    cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
-    ft = { "markdown" },
-    build = "cd app && npm install", -- Manually trigger the npm install
-    init = function()
-      vim.g.mkdp_filetypes = { "markdown" }
-    end,
-  },
+  -- {
+  --   "iamcco/markdown-preview.nvim",
+  --   cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+  --   ft = { "markdown" },
+  --   build = "cd app && npm install", -- Manually trigger the npm install
+  --   init = function()
+  --     vim.g.mkdp_filetypes = { "markdown" }
+  --   end,
+  -- },
 
   -- test new blink
   -- { import = "nvchad.blink.lazyspec" },
