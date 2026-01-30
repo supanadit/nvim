@@ -1,9 +1,19 @@
-**This repo is supposed to be used as config by NvChad users!**
+# Personal Neovim
 
-- The main nvchad repo (NvChad/NvChad) is used as a plugin by this repo.
-- So you just import its modules , like `require "nvchad.options" , require "nvchad.mappings"`
-- So you can delete the .git from this repo ( when you clone it locally ) or fork it :)
+This my Neovim configuration based on NvChad with some plugin needed for my daily works. Which is:
+
+1. Flutter
+2. Golang
+3. Kubernetes
+4. Docker
+5. JSON, YAML, TOML Syntax
+6. Typescript, Javascript for both Backend and Frontend
+
+Extra plugins related to my workflow:
+
+1. [nvim-spectre](https://github.com/nvim-pack/nvim-spectre)
+2. [kylechui/nvim-surround](https://github.com/kylechui/nvim-surround)
 
 # Credits
 
-1) Lazyvim starter https://github.com/LazyVim/starter as nvchad's starter was inspired by Lazyvim's . It made a lot of things easier!
+[NvChad](https://nvchad.com/)
