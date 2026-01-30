@@ -8,6 +8,7 @@ This my Neovim configuration based on NvChad with some plugin needed for my dail
 4. Docker
 5. JSON, YAML, TOML Syntax
 6. Typescript, Javascript for both Backend and Frontend
+7. Markdown
 
 Extra plugins related to my workflow:
 
