@@ -2,6 +2,9 @@ require "nvchad.options"
 
 -- add yours here!
 --
+vim.wo.relativenumber = true
+vim.wo.number = true
+
 vim.filetype.add {
   extension = {
     yml = function(path, bufnr)
