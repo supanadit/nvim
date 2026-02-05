@@ -190,6 +190,11 @@ return {
       }
     end,
   },
+  {
+    "onlyati/quadlet-lsp.nvim",
+    ft = { "systemd" }, -- This will load when you open your quadlet files
+    opts = {},
+  },
 
   -- test new blink
   -- { import = "nvchad.blink.lazyspec" },
