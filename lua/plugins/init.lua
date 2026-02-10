@@ -195,6 +195,21 @@ return {
     ft = { "systemd" }, -- This will load when you open your quadlet files
     opts = {},
   },
+  {
+    "williamboman/mason.nvim",
+    opts = {
+      ensure_installed = {
+        "pyright",
+        "ruff",
+        "black",
+      },
+    },
+  },
+
+  {
+    "github/copilot.vim",
+    lazy = false,
+  },
 
   -- test new blink
   -- { import = "nvchad.blink.lazyspec" },

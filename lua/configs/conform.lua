@@ -18,6 +18,7 @@ local options = {
     typescript = { "prettierd" },
     javascriptreact = { "prettierd", "eslint_d" },
     typescriptreact = { "prettierd", "eslint_d" },
+    python = { "black" },
   },
 
   -- format_on_save = {

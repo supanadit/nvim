@@ -21,6 +21,7 @@ local servers = {
   "marksman",
   "jsonls",
   "taplo",
+  "pyright",
 }
 
 local skip_setup = { yamlls = true, ansiblels = true, terraformls = true, gopls = true, bashls = true }
