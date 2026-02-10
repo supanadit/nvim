@@ -60,6 +60,7 @@ return {
         "json",
         "jsonc",
         "toml",
+        "yaml",
       },
     },
   },

@@ -5,6 +5,11 @@ require "nvchad.options"
 vim.wo.relativenumber = true
 vim.wo.number = true
 
+-- Enable folding
+vim.o.foldenable = true
+vim.o.foldmethod = 'indent'
+vim.o.foldlevel = 99
+
 vim.filetype.add {
   extension = {
     yml = function(path, bufnr)
