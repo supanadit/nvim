@@ -37,7 +37,17 @@ for _, lsp in ipairs(servers) do
 end
 
 vim.lsp.config("yamlls", {
-  on_attach = nvlsp.on_attach,
+  on_attach = function(client, bufnr)
+    -- Check if file contains YTT directives, if so detach LSP to avoid false errors
+    local lines = vim.api.nvim_buf_get_lines(bufnr, 0, 50, false)
+    for _, line in ipairs(lines) do
+      if line:match("^#@") or line:match("^#!") then
+        vim.lsp.buf_detach_client(bufnr, client.id)
+        return
+      end
+    end
+    nvlsp.on_attach(client, bufnr)
+  end,
   capabilities = nvlsp.capabilities,
   settings = {
     yaml = {
