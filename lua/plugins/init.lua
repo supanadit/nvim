@@ -212,6 +212,16 @@ return {
     lazy = false,
   },
 
+  -- YTT (Carvel) template support
+  {
+    "cappyzawa/starlark.vim",
+    lazy = false,
+  },
+  {
+    "vmware-tanzu/ytt.vim",
+    lazy = false,
+  },
+
   -- test new blink
   -- { import = "nvchad.blink.lazyspec" },
 
