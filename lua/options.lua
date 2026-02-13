@@ -19,6 +19,10 @@ vim.filetype.add {
       return is_ansible(path, bufnr) and "yaml.ansible" or "yaml"
     end,
   },
+  pattern = {
+    [".*%.ytt%.yaml"] = "ytt",
+    [".*%.ytt%.yml"] = "ytt",
+  },
 }
 
 function is_ansible(path, bufnr)

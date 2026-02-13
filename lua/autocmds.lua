@@ -21,3 +21,19 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.cmd("silent! highlight default link yttComment Comment")
   end,
 })
+
+-- Auto-enable ytt syntax for *.ytt.yaml files
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+  pattern = { "*.ytt.yaml", "*.ytt.yml" },
+  callback = function()
+    vim.cmd("set filetype=ytt")
+    -- Wait a bit for plugins to load, then enable ytt syntax
+    vim.defer_fn(function()
+      if vim.fn.exists(":EnableYtt") == 2 then
+        -- Load yaml syntax first, then enable ytt
+        vim.cmd("runtime! syntax/yaml.vim")
+        vim.cmd("EnableYtt")
+      end
+    end, 100)
+  end,
+})
