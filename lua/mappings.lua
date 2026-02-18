@@ -25,8 +25,13 @@ map("v", "C", '"_C')
 -- The "Greatest Move": Paste over highlighted text without losing your original yank
 map("v", "p", '"_dP')
 
--- Open chat for the current selection or line
-map("v", "<leader>ai", ":CopilotChat ", { desc = "CopilotChat - Inline" })
+-- Open chat for the current selection
+map("v", "<leader>ai", function()
+  local input = vim.fn.input "Chat about selection: "
+  if input ~= "" then
+    require("CopilotChat").ask(input, { selection = require("CopilotChat.select").visual })
+  end
+end, { desc = "CopilotChat - Selection" })
 
 -- Quick chat for the whole buffer
 map("n", "<leader>ai", function()
