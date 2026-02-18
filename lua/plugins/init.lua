@@ -244,6 +244,11 @@ return {
     lazy = false,
   },
 
+  {
+    "editorconfig/editorconfig-vim",
+    lazy = false,
+  },
+
   -- test new blink
   -- { import = "nvchad.blink.lazyspec" },
 
