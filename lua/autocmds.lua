@@ -6,6 +6,7 @@ vim.api.nvim_create_autocmd("FileType", {
   callback = function()
     vim.opt_local.foldmethod = "indent"
     vim.opt_local.foldlevel = 99
+    vim.opt_local.foldnestmax = 10
   end,
 })
 
