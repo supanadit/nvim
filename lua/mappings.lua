@@ -1,7 +1,6 @@
 require "nvchad.mappings"
 
 -- add yours here
-
 local map = vim.keymap.set
 
 map("n", ";", ":", { desc = "CMD enter command mode" })
@@ -16,3 +15,23 @@ map("n", "<leader>mp", "<cmd>MarkdownPreviewToggle<CR>", { desc = "Toggle Markdo
 map("n", "<leader>te", "<cmd>EnableYtt<CR>", { desc = "Enable YTT syntax" })
 map("n", "<leader>td", "<cmd>DisableYtt<CR>", { desc = "Disable YTT syntax" })
 -- map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")
+
+-- Delete in Visual Mode without yanking to clipboard
+map("v", "d", '"_d')
+map("v", "D", '"_D')
+map("v", "c", '"_c')
+map("v", "C", '"_C')
+
+-- The "Greatest Move": Paste over highlighted text without losing your original yank
+map("v", "p", '"_dP')
+
+-- Open chat for the current selection or line
+map("v", "<leader>ai", ":CopilotChat ", { desc = "CopilotChat - Inline" })
+
+-- Quick chat for the whole buffer
+map("n", "<leader>ai", function()
+  local input = vim.fn.input "Quick Chat: "
+  if input ~= "" then
+    require("CopilotChat").ask(input, { selection = require("CopilotChat.select").buffer })
+  end
+end, { desc = "CopilotChat - Quick chat" })
