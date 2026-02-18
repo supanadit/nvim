@@ -22,6 +22,11 @@ map("v", "D", '"_D')
 map("v", "c", '"_c')
 map("v", "C", '"_C')
 
+-- Delete in Normal Mode without yanking to clipboard
+map("n", "dd", '"_dd')
+map("n", "D", '"_D')
+map("n", "x", '"_x')
+
 -- The "Greatest Move": Paste over highlighted text without losing your original yank
 map("v", "p", '"_dP')
 
