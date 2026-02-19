@@ -282,6 +282,49 @@ return {
           args = { vim.fn.stdpath("data") .. "/mason/packages/js-debug-adapter/js-debug/src/dapDebugServer.js", "${port}" },
         }
       }
+
+      -- Helper function to get npm scripts from package.json
+      local function get_npm_scripts()
+        local cwd = vim.fn.getcwd()
+        local package_json_path = cwd .. "/package.json"
+        local file = io.open(package_json_path, "r")
+        if not file then
+          return {}
+        end
+        local content = file:read("*a")
+        file:close()
+        local ok, decoded = pcall(vim.json.decode, content)
+        if not ok or not decoded.scripts then
+          return {}
+        end
+        local scripts = {}
+        for name, _ in pairs(decoded.scripts) do
+          table.insert(scripts, name)
+        end
+        table.sort(scripts)
+        return scripts
+      end
+
+      -- Helper function to pick npm script
+      local function pick_npm_script()
+        local scripts = get_npm_scripts()
+        if #scripts == 0 then
+          vim.notify("No scripts found in package.json", vim.log.levels.WARN)
+          return nil
+        end
+        local choice = nil
+        vim.ui.select(scripts, {
+          prompt = "Select npm script to debug:",
+        }, function(selected)
+          choice = selected
+        end)
+        -- Wait for selection (coroutine-based)
+        if choice then
+          return choice
+        end
+        return nil
+      end
+
       dap.configurations.javascript = {
         {
           name = "Launch file",
@@ -311,22 +354,34 @@ return {
           internalConsoleOptions = "neverOpen",
         },
         {
-          name = "NestJS: start:dev",
+          name = "npm script (from package.json)",
           type = "pwa-node",
           request = "launch",
           runtimeExecutable = "npm",
-          runtimeArgs = { "run", "start:dev", "--", "--inspect" },
-          cwd = "${workspaceFolder}",
-          protocol = "inspector",
-          console = "integratedTerminal",
-          skipFiles = { "<node_internals>/**" },
-        },
-        {
-          name = "NestJS: start:debug",
-          type = "pwa-node",
-          request = "launch",
-          runtimeExecutable = "npm",
-          runtimeArgs = { "run", "start:debug" },
+          runtimeArgs = function()
+            local scripts = get_npm_scripts()
+            if #scripts == 0 then
+              vim.notify("No scripts found in package.json", vim.log.levels.WARN)
+              return { "run", "start" }
+            end
+            local co = coroutine.running()
+            local selected_script = nil
+            vim.ui.select(scripts, {
+              prompt = "Select npm script to debug:",
+            }, function(selected)
+              selected_script = selected
+              if co then
+                coroutine.resume(co)
+              end
+            end)
+            if co then
+              coroutine.yield()
+            end
+            if selected_script then
+              return { "run", selected_script, "--", "--inspect" }
+            end
+            return { "run", "start" }
+          end,
           cwd = "${workspaceFolder}",
           protocol = "inspector",
           console = "integratedTerminal",
