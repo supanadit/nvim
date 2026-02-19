@@ -82,6 +82,11 @@ return {
 
     config = function()
       require("flutter-tools").setup {
+        debugger = {
+          enabled = true,
+          run_via_dap = true,
+          exception_breakpoints = {},
+        },
         lsp = {
           on_attach = require("nvchad.configs.lspconfig").on_attach,
           capabilities = require("nvchad.configs.lspconfig").capabilities,
@@ -208,6 +213,7 @@ return {
         "clangd",
         "clang-format",
         "clang-tidy",
+        "js-debug-adapter",
       },
     },
   },
@@ -265,28 +271,70 @@ return {
         command = "gdb",
         args = { "--interpreter=dap", "--eval-command", "set print pretty on" }
       }
-      dap.configurations.cpp = {
+
+      -- Node.js configuration
+      dap.adapters["pwa-node"] = {
+        type = "server",
+        host = "localhost",
+        port = "${port}",
+        executable = {
+          command = "node",
+          args = { vim.fn.stdpath("data") .. "/mason/packages/js-debug-adapter/js-debug/src/dapDebugServer.js", "${port}" },
+        }
+      }
+      dap.configurations.javascript = {
         {
-          name = "Launch file (gdb)",
-          type = "gdb",
+          name = "Launch file",
+          type = "pwa-node",
           request = "launch",
-          program = function()
-            return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
-          end,
-          cwd = '${workspaceFolder}',
-          stopAtBeginningOfMainSubprogram = false,
+          program = "${file}",
+          cwd = "${workspaceFolder}",
         },
         {
-          name = 'Attach to process',
-          type = 'gdb',
-          request = 'attach',
+          name = "Attach to process",
+          type = "pwa-node",
+          request = "attach",
           processId = require('dap.utils').pick_process,
-          program = function()
-            return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
-          end,
+        },
+        {
+          name = "Debug Jest tests",
+          type = "pwa-node",
+          request = "launch",
+          runtimeExecutable = "node",
+          runtimeArgs = {
+            "./node_modules/jest/bin/jest.js",
+            "--runInBand",
+          },
+          rootPath = "${workspaceFolder}",
+          cwd = "${workspaceFolder}",
+          console = "integratedTerminal",
+          internalConsoleOptions = "neverOpen",
+        },
+        {
+          name = "NestJS: start:dev",
+          type = "pwa-node",
+          request = "launch",
+          runtimeExecutable = "npm",
+          runtimeArgs = { "run", "start:dev", "--", "--inspect" },
+          cwd = "${workspaceFolder}",
+          protocol = "inspector",
+          console = "integratedTerminal",
+          skipFiles = { "<node_internals>/**" },
+        },
+        {
+          name = "NestJS: start:debug",
+          type = "pwa-node",
+          request = "launch",
+          runtimeExecutable = "npm",
+          runtimeArgs = { "run", "start:debug" },
+          cwd = "${workspaceFolder}",
+          protocol = "inspector",
+          console = "integratedTerminal",
+          skipFiles = { "<node_internals>/**" },
         },
       }
-      dap.configurations.c = dap.configurations.cpp
+      dap.configurations.typescript = dap.configurations.javascript
+      dap.configurations.json = dap.configurations.javascript
     end,
   },
   {

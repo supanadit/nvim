@@ -18,6 +18,20 @@ map("n", "<leader>dU", "<cmd>lua require('dapui').toggle()<CR>", { desc = "Toggl
 map("n", "<leader>dr", "<cmd>lua require('dap').repl.open()<CR>", { desc = "Open DAP REPL" })
 
 map("n", "<leader>mp", "<cmd>MarkdownPreviewToggle<CR>", { desc = "Toggle Markdown Preview" })
+
+-- Flutter mappings
+map("n", "<leader>Fd", function()
+  local device = vim.fn.input("Device (linux/chrome): ", "linux")
+  if device ~= "" then
+    vim.cmd("FlutterRun -d " .. device)
+  end
+end, { desc = "Flutter Run with device" })
+map("n", "<leader>Fq", "<cmd>FlutterQuit<CR>", { desc = "Flutter Quit" })
+map("n", "<leader>Fr", "<cmd>FlutterRestart<CR>", { desc = "Flutter Restart" })
+map("n", "<leader>Fl", "<cmd>FlutterLogClear<CR>", { desc = "Flutter Log Clear" })
+map("n", "<leader>Fo", "<cmd>FlutterOutlineToggle<CR>", { desc = "Flutter Outline Toggle" })
+map("n", "<leader>FD", "<cmd>FlutterDevices<CR>", { desc = "Flutter Devices" })
+
 -- YTT plugin mappings (remapped to avoid conflict with nvim-tree <Leader>e)
 map("n", "<leader>te", "<cmd>EnableYtt<CR>", { desc = "Enable YTT syntax" })
 map("n", "<leader>td", "<cmd>DisableYtt<CR>", { desc = "Disable YTT syntax" })
