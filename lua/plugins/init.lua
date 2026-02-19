@@ -61,6 +61,8 @@ return {
         "jsonc",
         "toml",
         "yaml",
+        "c",
+        "cpp",
       },
     },
   },
@@ -203,6 +205,9 @@ return {
         "pyright",
         "ruff",
         "black",
+        "clangd",
+        "clang-format",
+        "clang-tidy",
       },
     },
   },
@@ -247,6 +252,49 @@ return {
   {
     "editorconfig/editorconfig-vim",
     lazy = false,
+  },
+
+  -- DAP for debugging
+  {
+    "mfussenegger/nvim-dap",
+    config = function()
+      local dap = require("dap")
+      -- Basic C/C++ configuration using gdb
+      dap.adapters.gdb = {
+        type = "executable",
+        command = "gdb",
+        args = { "--interpreter=dap", "--eval-command", "set print pretty on" }
+      }
+      dap.configurations.cpp = {
+        {
+          name = "Launch file (gdb)",
+          type = "gdb",
+          request = "launch",
+          program = function()
+            return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+          end,
+          cwd = '${workspaceFolder}',
+          stopAtBeginningOfMainSubprogram = false,
+        },
+        {
+          name = 'Attach to process',
+          type = 'gdb',
+          request = 'attach',
+          processId = require('dap.utils').pick_process,
+          program = function()
+            return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+          end,
+        },
+      }
+      dap.configurations.c = dap.configurations.cpp
+    end,
+  },
+  {
+    "rcarriga/nvim-dap-ui",
+    dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" },
+    config = function()
+      require("dapui").setup()
+    end,
   },
 
   -- test new blink
