@@ -228,7 +228,7 @@ return {
     opts = {
       mappings = {
         complete = {
-          insert = '<C-Space>',
+          insert = "<C-Space>",
         },
       },
     },

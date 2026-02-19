@@ -5,6 +5,9 @@ require "nvchad.options"
 vim.wo.relativenumber = true
 vim.wo.number = true
 
+-- Disable word wrap (lines will scroll horizontally)
+vim.o.wrap = false
+
 -- Enable folding
 vim.o.foldenable = true
 vim.o.foldmethod = 'indent'
