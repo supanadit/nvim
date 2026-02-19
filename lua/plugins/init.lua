@@ -214,6 +214,7 @@ return {
         "clang-format",
         "clang-tidy",
         "js-debug-adapter",
+        "delve",
       },
     },
   },
@@ -281,6 +282,16 @@ return {
           command = "node",
           args = { vim.fn.stdpath("data") .. "/mason/packages/js-debug-adapter/js-debug/src/dapDebugServer.js", "${port}" },
         }
+      }
+
+      -- Go (Delve) configuration
+      dap.adapters.delve = {
+        type = "server",
+        port = "${port}",
+        executable = {
+          command = vim.fn.stdpath("data") .. "/mason/bin/dlv",
+          args = { "dap", "-l", "127.0.0.1:${port}" },
+        },
       }
 
       -- Helper function to get npm scripts from package.json
@@ -390,6 +401,43 @@ return {
       }
       dap.configurations.typescript = dap.configurations.javascript
       dap.configurations.json = dap.configurations.javascript
+
+      -- Go configurations
+      dap.configurations.go = {
+        {
+          type = "delve",
+          name = "Debug",
+          request = "launch",
+          program = "${file}",
+        },
+        {
+          type = "delve",
+          name = "Debug Package",
+          request = "launch",
+          program = "${fileDirname}",
+        },
+        {
+          type = "delve",
+          name = "Debug test",
+          request = "launch",
+          mode = "test",
+          program = "${file}",
+        },
+        {
+          type = "delve",
+          name = "Debug test (go.mod)",
+          request = "launch",
+          mode = "test",
+          program = "./${relativeFileDirname}",
+        },
+        {
+          type = "delve",
+          name = "Attach to process",
+          request = "attach",
+          mode = "local",
+          processId = require('dap.utils').pick_process,
+        },
+      }
     end,
   },
   {
