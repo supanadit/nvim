@@ -474,7 +474,7 @@ return {
     event = "VeryLazy",
     ---@type Flash.Config
     opts = {
-      labels = "abcdefghijklmnopqrstuvwxyz",
+      labels = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890",
       modes = {
         search = {
           enabled = true,
