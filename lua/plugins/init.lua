@@ -265,12 +265,12 @@ return {
   {
     "mfussenegger/nvim-dap",
     config = function()
-      local dap = require("dap")
+      local dap = require "dap"
       -- Basic C/C++ configuration using gdb
       dap.adapters.gdb = {
         type = "executable",
         command = "gdb",
-        args = { "--interpreter=dap", "--eval-command", "set print pretty on" }
+        args = { "--interpreter=dap", "--eval-command", "set print pretty on" },
       }
 
       -- Node.js configuration
@@ -280,8 +280,11 @@ return {
         port = "${port}",
         executable = {
           command = "node",
-          args = { vim.fn.stdpath("data") .. "/mason/packages/js-debug-adapter/js-debug/src/dapDebugServer.js", "${port}" },
-        }
+          args = {
+            vim.fn.stdpath "data" .. "/mason/packages/js-debug-adapter/js-debug/src/dapDebugServer.js",
+            "${port}",
+          },
+        },
       }
 
       -- Go (Delve) configuration
@@ -289,7 +292,7 @@ return {
         type = "server",
         port = "${port}",
         executable = {
-          command = vim.fn.stdpath("data") .. "/mason/bin/dlv",
+          command = vim.fn.stdpath "data" .. "/mason/bin/dlv",
           args = { "dap", "-l", "127.0.0.1:${port}" },
         },
       }
@@ -302,7 +305,7 @@ return {
         if not file then
           return {}
         end
-        local content = file:read("*a")
+        local content = file:read "*a"
         file:close()
         local ok, decoded = pcall(vim.json.decode, content)
         if not ok or not decoded.scripts then
@@ -348,7 +351,7 @@ return {
           name = "Attach to process",
           type = "pwa-node",
           request = "attach",
-          processId = require('dap.utils').pick_process,
+          processId = require("dap.utils").pick_process,
         },
         {
           name = "Debug Jest tests",
@@ -435,7 +438,7 @@ return {
           name = "Attach to process",
           request = "attach",
           mode = "local",
-          processId = require('dap.utils').pick_process,
+          processId = require("dap.utils").pick_process,
         },
       }
     end,
@@ -447,7 +450,82 @@ return {
       require("dapui").setup()
     end,
   },
-
+  {
+    "tris203/precognition.nvim",
+    -- Load only when you actually start editing to avoid the E565 error
+    event = "VeryLazy",
+    opts = {
+      -- You can start with it disabled if the error persists
+      -- startVisible = false,
+    },
+  },
+  {
+    "chrisgrieser/nvim-spider",
+    -- Remove the dependency line here; they will find each other via 'opts'
+    lazy = true,
+    keys = {
+      { "w", "<cmd>lua require('spider').motion('w')<CR>", mode = { "n", "o", "x" }, desc = "Spider-w" },
+      { "e", "<cmd>lua require('spider').motion('e')<CR>", mode = { "n", "o", "x" }, desc = "Spider-e" },
+      { "b", "<cmd>lua require('spider').motion('b')<CR>", mode = { "n", "o", "x" }, desc = "Spider-b" },
+    },
+  },
+  {
+    "folke/flash.nvim",
+    event = "VeryLazy",
+    ---@type Flash.Config
+    opts = {
+      modes = {
+        search = {
+          enabled = true,
+        },
+        char = {
+          jump_labels = true,
+        },
+      },
+    },
+    keys = {
+      {
+        "s",
+        mode = { "n", "x", "o" },
+        function()
+          require("flash").jump()
+        end,
+        desc = "Flash",
+      },
+      {
+        "S",
+        mode = { "n", "x", "o" },
+        function()
+          require("flash").treesitter()
+        end,
+        desc = "Flash Treesitter",
+      },
+      {
+        "r",
+        mode = "o",
+        function()
+          require("flash").remote()
+        end,
+        desc = "Remote Flash",
+      },
+      {
+        "R",
+        mode = { "o", "x" },
+        function()
+          require("flash").treesitter_search()
+        end,
+        desc = "Treesitter Search",
+      },
+      {
+        "<c-s>",
+        mode = { "c" },
+        function()
+          require("flash").toggle()
+        end,
+        desc = "Toggle Flash Search",
+      },
+    },
+  },
   -- test new blink
   -- { import = "nvchad.blink.lazyspec" },
 
