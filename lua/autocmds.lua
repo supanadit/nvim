@@ -40,10 +40,12 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
 })
 
 -- Disable Tab buffer switching in CopilotChat
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = "copilot-chat",
-  callback = function()
-    vim.keymap.set("n", "<Tab>", "<Nop>", { buffer = true })
-    vim.keymap.set("n", "<S-Tab>", "<Nop>", { buffer = true })
-  end,
-})
+-- vim.api.nvim_create_autocmd("FileType", {
+--   pattern = "copilot-chat",
+--   callback = function()
+--     vim.keymap.set("n", "<Tab>", "<Nop>", { buffer = true })
+--     vim.keymap.set("n", "<S-Tab>", "<Nop>", { buffer = true })
+--   end,
+-- })
+
+require("devcontainer").setup{}

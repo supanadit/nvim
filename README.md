@@ -15,6 +15,12 @@ Extra plugins related to my workflow:
 1. [nvim-spectre](https://github.com/nvim-pack/nvim-spectre)
 2. [kylechui/nvim-surround](https://github.com/kylechui/nvim-surround)
 
+# Formatter Issue
+
+```bash
+# If you had an issue with formatter not found, run this
+:MasonInstallAll
+```
 # Credits
 
 [NvChad](https://nvchad.com/)

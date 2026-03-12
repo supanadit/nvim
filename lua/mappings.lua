@@ -52,22 +52,22 @@ map("n", "x", '"_x')
 map("v", "p", '"_dP')
 
 -- Open chat for the current selection
-map("v", "<leader>ai", function()
-  local input = vim.fn.input "Chat about selection: "
-  if input ~= "" then
-    require("CopilotChat").ask(input, { selection = require("CopilotChat.select").visual })
-  end
-end, { desc = "CopilotChat - Selection" })
-
--- Quick chat for the whole buffer
-map("n", "<leader>ai", function()
-  local input = vim.fn.input "Quick Chat: "
-  if input ~= "" then
-    require("CopilotChat").ask(input)
-  end
-end, { desc = "CopilotChat - Quick chat" })
-
--- Open CopilotChat window directly (use #buffer or #file in chat to add context)
-map("n", "<leader>ao", function()
-  require("CopilotChat").open()
-end, { desc = "CopilotChat - Open" })
+-- map("v", "<leader>ai", function()
+--   local input = vim.fn.input "Chat about selection: "
+--   if input ~= "" then
+--     require("CopilotChat").ask(input, { selection = require("CopilotChat.select").visual })
+--   end
+-- end, { desc = "CopilotChat - Selection" })
+--
+-- -- Quick chat for the whole buffer
+-- map("n", "<leader>ai", function()
+--   local input = vim.fn.input "Quick Chat: "
+--   if input ~= "" then
+--     require("CopilotChat").ask(input)
+--   end
+-- end, { desc = "CopilotChat - Quick chat" })
+--
+-- -- Open CopilotChat window directly (use #buffer or #file in chat to add context)
+-- map("n", "<leader>ao", function()
+--   require("CopilotChat").open()
+-- end, { desc = "CopilotChat - Open" })
