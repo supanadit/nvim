@@ -246,84 +246,84 @@ return {
   --     },
   --   },
   -- },
-  {
-    "nickjvandyke/opencode.nvim",
-    lazy = false,
-    version = "*", -- Latest stable release
-    dependencies = {
-      {
-        -- `snacks.nvim` integration is recommended, but optional
-        ---@module "snacks" <- Loads `snacks.nvim` types for configuration intellisense
-        "folke/snacks.nvim",
-        optional = true,
-        opts = {
-          input = {}, -- Enhances `ask()`
-          picker = { -- Enhances `select()`
-            actions = {
-              opencode_send = function(...)
-                return require("opencode").snacks_picker_send(...)
-              end,
-            },
-            win = {
-              input = {
-                keys = {
-                  ["<a-a>"] = { "opencode_send", mode = { "n", "i" } },
-                },
-              },
-            },
-          },
-        },
-      },
-    },
-    config = function()
-      ---@type opencode.Opts
-      vim.g.opencode_opts = {
-      -- Your configuration, if any; goto definition on the type or field for details
-      server = {
-        start = function()
-          require("opencode.terminal").start("opencode --port --agent plan")
-        end,
-        toggle = function()
-          require("opencode.terminal").toggle("opencode --port --agent plan")
-        end,
-        stop = function()
-          require("opencode.terminal").stop()
-        end,
-      },
-    }
-
-      vim.o.autoread = true -- Required for `opts.events.reload`
-
-      -- Recommended/example keymaps
-      vim.keymap.set({ "n", "x" }, "<C-a>", function()
-        require("opencode").ask("@this: ", { submit = true })
-      end, { desc = "Ask opencode…" })
-      vim.keymap.set({ "n", "x" }, "<C-x>", function()
-        require("opencode").select()
-      end, { desc = "Execute opencode action…" })
-      vim.keymap.set({ "n", "t" }, "<C-.>", function()
-        require("opencode").toggle()
-      end, { desc = "Toggle opencode" })
-
-      vim.keymap.set({ "n", "x" }, "go", function()
-        return require("opencode").operator "@this "
-      end, { desc = "Add range to opencode", expr = true })
-      vim.keymap.set("n", "goo", function()
-        return require("opencode").operator "@this " .. "_"
-      end, { desc = "Add line to opencode", expr = true })
-
-      vim.keymap.set("n", "<S-C-u>", function()
-        require("opencode").command "session.half.page.up"
-      end, { desc = "Scroll opencode up" })
-      vim.keymap.set("n", "<S-C-d>", function()
-        require("opencode").command "session.half.page.down"
-      end, { desc = "Scroll opencode down" })
-
-      -- You may want these if you use the opinionated `<C-a>` and `<C-x>` keymaps above — otherwise consider `<leader>o…` (and remove terminal mode from the `toggle` keymap)
-      vim.keymap.set("n", "+", "<C-a>", { desc = "Increment under cursor", noremap = true })
-      vim.keymap.set("n", "-", "<C-x>", { desc = "Decrement under cursor", noremap = true })
-    end,
-  },
+  -- {
+  --   "nickjvandyke/opencode.nvim",
+  --   lazy = false,
+  --   version = "*", -- Latest stable release
+  --   dependencies = {
+  --     {
+  --       -- `snacks.nvim` integration is recommended, but optional
+  --       ---@module "snacks" <- Loads `snacks.nvim` types for configuration intellisense
+  --       "folke/snacks.nvim",
+  --       optional = true,
+  --       opts = {
+  --         input = {}, -- Enhances `ask()`
+  --         picker = { -- Enhances `select()`
+  --           actions = {
+  --             opencode_send = function(...)
+  --               return require("opencode").snacks_picker_send(...)
+  --             end,
+  --           },
+  --           win = {
+  --             input = {
+  --               keys = {
+  --                 ["<a-a>"] = { "opencode_send", mode = { "n", "i" } },
+  --               },
+  --             },
+  --           },
+  --         },
+  --       },
+  --     },
+  --   },
+  --   config = function()
+  --     ---@type opencode.Opts
+  --     vim.g.opencode_opts = {
+  --     -- Your configuration, if any; goto definition on the type or field for details
+  --     server = {
+  --       start = function()
+  --         require("opencode.terminal").start("opencode --port --agent plan")
+  --       end,
+  --       toggle = function()
+  --         require("opencode.terminal").toggle("opencode --port --agent plan")
+  --       end,
+  --       stop = function()
+  --         require("opencode.terminal").stop()
+  --       end,
+  --     },
+  --   }
+  --
+  --     vim.o.autoread = true -- Required for `opts.events.reload`
+  --
+  --     -- Recommended/example keymaps
+  --     vim.keymap.set({ "n", "x" }, "<C-a>", function()
+  --       require("opencode").ask("@this: ", { submit = true })
+  --     end, { desc = "Ask opencode…" })
+  --     vim.keymap.set({ "n", "x" }, "<C-x>", function()
+  --       require("opencode").select()
+  --     end, { desc = "Execute opencode action…" })
+  --     vim.keymap.set({ "n", "t" }, "<C-.>", function()
+  --       require("opencode").toggle()
+  --     end, { desc = "Toggle opencode" })
+  --
+  --     vim.keymap.set({ "n", "x" }, "go", function()
+  --       return require("opencode").operator "@this "
+  --     end, { desc = "Add range to opencode", expr = true })
+  --     vim.keymap.set("n", "goo", function()
+  --       return require("opencode").operator "@this " .. "_"
+  --     end, { desc = "Add line to opencode", expr = true })
+  --
+  --     vim.keymap.set("n", "<S-C-u>", function()
+  --       require("opencode").command "session.half.page.up"
+  --     end, { desc = "Scroll opencode up" })
+  --     vim.keymap.set("n", "<S-C-d>", function()
+  --       require("opencode").command "session.half.page.down"
+  --     end, { desc = "Scroll opencode down" })
+  --
+  --     -- You may want these if you use the opinionated `<C-a>` and `<C-x>` keymaps above — otherwise consider `<leader>o…` (and remove terminal mode from the `toggle` keymap)
+  --     vim.keymap.set("n", "+", "<C-a>", { desc = "Increment under cursor", noremap = true })
+  --     vim.keymap.set("n", "-", "<C-x>", { desc = "Decrement under cursor", noremap = true })
+  --   end,
+  -- },
 
   -- YTT (Carvel) template support
   {
@@ -529,86 +529,107 @@ return {
       require("dapui").setup()
     end,
   },
-  {
-    "tris203/precognition.nvim",
-    -- Load only when you actually start editing to avoid the E565 error
-    event = "VeryLazy",
-    opts = {
-      -- You can start with it disabled if the error persists
-      -- startVisible = false,
-    },
-  },
-  {
-    "chrisgrieser/nvim-spider",
-    -- Remove the dependency line here; they will find each other via 'opts'
-    lazy = true,
-    keys = {
-      { "w", "<cmd>lua require('spider').motion('w')<CR>", mode = { "n", "o", "x" }, desc = "Spider-w" },
-      { "e", "<cmd>lua require('spider').motion('e')<CR>", mode = { "n", "o", "x" }, desc = "Spider-e" },
-      { "b", "<cmd>lua require('spider').motion('b')<CR>", mode = { "n", "o", "x" }, desc = "Spider-b" },
-    },
-  },
-  {
-    "folke/flash.nvim",
-    event = "VeryLazy",
-    ---@type Flash.Config
-    opts = {
-      labels = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890",
-      modes = {
-        search = {
-          enabled = true,
-        },
-        char = {
-          jump_labels = true,
-        },
-      },
-    },
-    keys = {
-      {
-        "s",
-        mode = { "n", "x", "o" },
-        function()
-          require("flash").jump()
-        end,
-        desc = "Flash",
-      },
-      {
-        "S",
-        mode = { "n", "x", "o" },
-        function()
-          require("flash").treesitter()
-        end,
-        desc = "Flash Treesitter",
-      },
-      {
-        "r",
-        mode = "o",
-        function()
-          require("flash").remote()
-        end,
-        desc = "Remote Flash",
-      },
-      {
-        "R",
-        mode = { "o", "x" },
-        function()
-          require("flash").treesitter_search()
-        end,
-        desc = "Treesitter Search",
-      },
-      {
-        "<c-s>",
-        mode = { "c" },
-        function()
-          require("flash").toggle()
-        end,
-        desc = "Toggle Flash Search",
-      },
-    },
-  },
+  -- {
+  --   "tris203/precognition.nvim",
+  --   -- Load only when you actually start editing to avoid the E565 error
+  --   event = "VeryLazy",
+  --   opts = {
+  --     -- You can start with it disabled if the error persists
+  --     -- startVisible = false,
+  --   },
+  -- },
+  -- {
+  --   "chrisgrieser/nvim-spider",
+  --   -- Remove the dependency line here; they will find each other via 'opts'
+  --   lazy = true,
+  --   keys = {
+  --     { "w", "<cmd>lua require('spider').motion('w')<CR>", mode = { "n", "o", "x" }, desc = "Spider-w" },
+  --     { "e", "<cmd>lua require('spider').motion('e')<CR>", mode = { "n", "o", "x" }, desc = "Spider-e" },
+  --     { "b", "<cmd>lua require('spider').motion('b')<CR>", mode = { "n", "o", "x" }, desc = "Spider-b" },
+  --   },
+  -- },
+  -- {
+  --   "folke/flash.nvim",
+  --   event = "VeryLazy",
+  --   ---@type Flash.Config
+  --   opts = {
+  --     labels = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890",
+  --     modes = {
+  --       search = {
+  --         enabled = true,
+  --       },
+  --       char = {
+  --         jump_labels = true,
+  --       },
+  --     },
+  --   },
+  --   keys = {
+  --     {
+  --       "s",
+  --       mode = { "n", "x", "o" },
+  --       function()
+  --         require("flash").jump()
+  --       end,
+  --       desc = "Flash",
+  --     },
+  --     {
+  --       "S",
+  --       mode = { "n", "x", "o" },
+  --       function()
+  --         require("flash").treesitter()
+  --       end,
+  --       desc = "Flash Treesitter",
+  --     },
+  --     {
+  --       "r",
+  --       mode = "o",
+  --       function()
+  --         require("flash").remote()
+  --       end,
+  --       desc = "Remote Flash",
+  --     },
+  --     {
+  --       "R",
+  --       mode = { "o", "x" },
+  --       function()
+  --         require("flash").treesitter_search()
+  --       end,
+  --       desc = "Treesitter Search",
+  --     },
+  --     {
+  --       "<c-s>",
+  --       mode = { "c" },
+  --       function()
+  --         require("flash").toggle()
+  --       end,
+  --       desc = "Toggle Flash Search",
+  --     },
+  --   },
+  -- },
   {
     "https://codeberg.org/esensar/nvim-dev-container",
     dependencies = "nvim-treesitter/nvim-treesitter",
+  },
+  {
+    "easymotion/vim-easymotion",
+    lazy = false, -- Load it on startup so the mappings work immediately
+  },
+  {
+    "smoka7/multicursors.nvim",
+    event = "VeryLazy",
+    dependencies = {
+      "nvimtools/hydra.nvim",
+    },
+    opts = {},
+    cmd = { "MCstart", "MCvisual", "MCclear", "MCpattern", "MCvisualPattern", "MCunderCursor" },
+    keys = {
+      {
+        mode = { "v", "n" },
+        "<Leader>m",
+        "<cmd>MCstart<cr>",
+        desc = "Create a selection for selected text or word under the cursor",
+      },
+    },
   },
   -- test new blink
   -- { import = "nvchad.blink.lazyspec" },

@@ -5,7 +5,7 @@ local map = vim.keymap.set
 
 map("n", ";", ":", { desc = "CMD enter command mode" })
 map("i", "jk", "<ESC>")
-map("n", "<C-d>", "m`yyp``", { desc = "Duplicate line (keep cursor)" })
+-- map("n", "<C-d>", "m`yyp``", { desc = "Duplicate line (keep cursor)" })
 
 -- General Debugger mappings
 map("n", "<leader>dc", "<cmd>lua require('dap').continue()<CR>", { desc = "Debug Continue" })
@@ -18,6 +18,20 @@ map("n", "<leader>dU", "<cmd>lua require('dapui').toggle()<CR>", { desc = "Toggl
 map("n", "<leader>dr", "<cmd>lua require('dap').repl.open()<CR>", { desc = "Open DAP REPL" })
 
 map("n", "<leader>mp", "<cmd>MarkdownPreviewToggle<CR>", { desc = "Toggle Markdown Preview" })
+
+-- EasyMotion Mappings
+-- Jump to anywhere with 2 characters (Similar to 's' in other plugins)
+map("n", "<leader><leader>s", "<Plug>(easymotion-sn)", { desc = "EasyMotion: 2-char search" })
+
+-- Jump to word (forward/backward)
+map("n", "<leader><leader>w", "<Plug>(easymotion-overwin-w)", { desc = "EasyMotion: Jump to word" })
+
+-- Line motions (very useful for vertical navigation)
+map("n", "<leader><leader>j", "<Plug>(easymotion-j)", { desc = "EasyMotion: Jump down lines" })
+map("n", "<leader><leader>k", "<Plug>(easymotion-k)", { desc = "EasyMotion: Jump up lines" })
+
+-- Target-based search (Type / then your target, then pick the label)
+map("n", "<leader><leader>/", "<Plug>(easymotion-tn)", { desc = "EasyMotion: Search target" })
 
 -- Flutter mappings
 map("n", "<leader>Fd", function()
