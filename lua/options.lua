@@ -29,14 +29,14 @@ vim.filetype.add {
   },
 }
 
-function is_ansible(path, bufnr)
-  -- Detect based on directory name or file content
-  local filepath = vim.fn.expand "%:p"
-  if filepath:match "playbooks/" or filepath:match "roles/" or filepath:match "tasks/" then
-    return true
-  end
-  return false
-end
+-- function is_ansible(path, bufnr)
+--   -- Detect based on directory name or file content
+--   local filepath = vim.fn.expand "%:p"
+--   if filepath:match "playbooks/" or filepath:match "roles/" or filepath:match "tasks/" then
+--     return true
+--   end
+--   return false
+-- end
 
 -- local o = vim.o
 -- o.cursorlineopt ='both' -- to enable cursorline!
