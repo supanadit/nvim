@@ -270,7 +270,9 @@ return {
     "sudo-tee/opencode.nvim",
     lazy = false,
     config = function()
-      require("opencode").setup {}
+      require("opencode").setup {
+        default_mode = "plan",
+      }
     end,
     dependencies = {
       "nvim-lua/plenary.nvim",
