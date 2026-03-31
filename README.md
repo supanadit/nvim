@@ -20,6 +20,7 @@ Extra plugins related to my workflow:
 ```bash
 # If you had an issue with formatter not found, run this
 :MasonInstallAll
+:TSInstallAll
 ```
 # Credits
 

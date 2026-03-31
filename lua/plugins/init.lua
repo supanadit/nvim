@@ -60,6 +60,7 @@ return {
 
   {
     "nvim-treesitter/nvim-treesitter",
+    event = { "BufReadPost", "BufNewFile" },
     opts = {
       ensure_installed = {
         "vim",
@@ -85,7 +86,21 @@ return {
         "cpp",
         "json",
       },
+      highlight = {
+        enable = true,
+        additional_vim_regex_highlighting = { "yaml", "yaml.kubernetes", "yaml.ansible", "ytt" },
+      },
     },
+    config = function(_, opts)
+      local ok, configs = pcall(require, "nvim-treesitter.configs")
+      if ok then
+        configs.setup(opts)
+        local ft_to_parser = require("nvim-treesitter.parsers").filetype_to_parsername
+        ft_to_parser["yaml.kubernetes"] = "yaml"
+        ft_to_parser["yaml.ansible"] = "yaml"
+        ft_to_parser["ytt"] = "yaml"
+      end
+    end,
   },
 
   {

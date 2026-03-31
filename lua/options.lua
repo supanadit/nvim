@@ -15,13 +15,37 @@ vim.o.foldlevel = 99
 vim.o.foldcolumn = '1'
 vim.o.timeoutlen = 1000
 
+local function detect_yaml_filetype(path, bufnr)
+  local filepath = vim.fn.expand("%:p")
+  
+  if filepath:match "%.ytt%." then
+    return "ytt"
+  end
+  
+  if filepath:match "playbooks/" or filepath:match "roles/" or filepath:match "tasks/" then
+    return "yaml.ansible"
+  end
+  
+  if bufnr and vim.api.nvim_buf_is_valid(bufnr) then
+    local content = table.concat(vim.api.nvim_buf_get_lines(bufnr, 0, 50, false), "\n")
+    if content:match "@ytt:" or content:match "%$%{" then
+      return "ytt"
+    end
+    if content:match "apiVersion" and content:match "kind" then
+      return "yaml.kubernetes"
+    end
+  end
+  
+  return "yaml"
+end
+
 vim.filetype.add {
   extension = {
     yml = function(path, bufnr)
-      return is_ansible(path, bufnr) and "yaml.ansible" or "yaml"
+      return detect_yaml_filetype(path, bufnr)
     end,
     yaml = function(path, bufnr)
-      return is_ansible(path, bufnr) and "yaml.ansible" or "yaml"
+      return detect_yaml_filetype(path, bufnr)
     end,
   },
   pattern = {
@@ -29,15 +53,6 @@ vim.filetype.add {
     [".*%.ytt%.yml"] = "ytt",
   },
 }
-
--- function is_ansible(path, bufnr)
---   -- Detect based on directory name or file content
---   local filepath = vim.fn.expand "%:p"
---   if filepath:match "playbooks/" or filepath:match "roles/" or filepath:match "tasks/" then
---     return true
---   end
---   return false
--- end
 
 -- local o = vim.o
 -- o.cursorlineopt ='both' -- to enable cursorline!
