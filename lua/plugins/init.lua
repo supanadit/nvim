@@ -88,7 +88,7 @@ return {
       },
       highlight = {
         enable = true,
-        additional_vim_regex_highlighting = { "yaml", "yaml.kubernetes", "yaml.ansible", "ytt" },
+        additional_vim_regex_highlighting = { "yaml", "yaml.kubernetes", "yaml.ansible", "yaml.docker-compose", "ytt" },
       },
     },
     config = function(_, opts)
@@ -98,6 +98,7 @@ return {
         local ft_to_parser = require("nvim-treesitter.parsers").filetype_to_parsername
         ft_to_parser["yaml.kubernetes"] = "yaml"
         ft_to_parser["yaml.ansible"] = "yaml"
+        ft_to_parser["yaml.docker-compose"] = "yaml"
         ft_to_parser["ytt"] = "yaml"
       end
     end,

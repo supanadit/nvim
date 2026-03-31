@@ -1,7 +1,7 @@
 require "nvchad.autocmds"
 
 vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "yaml", "yaml.ansible", "yaml.kubernetes", "ytt" },
+  pattern = { "yaml", "yaml.ansible", "yaml.kubernetes", "yaml.docker-compose", "ytt" },
   callback = function()
     vim.opt_local.foldmethod = "indent"
     vim.opt_local.foldlevel = 99
@@ -10,7 +10,7 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "yaml.ansible", "yaml.kubernetes" },
+  pattern = { "yaml.ansible", "yaml.kubernetes", "yaml.docker-compose" },
   callback = function()
     vim.cmd("runtime! syntax/yaml.vim")
   end,
