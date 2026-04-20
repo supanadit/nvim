@@ -19,6 +19,10 @@ return {
   {
     "nvim-tree/nvim-tree.lua",
     opts = {
+      view = {
+        number = true,
+        relativenumber = true,
+      },
       filters = {
         -- Setting git_ignored to false will make them visible by default
         git_ignored = false,
