@@ -331,6 +331,182 @@ return {
     lazy = false,
   },
 
+  -- Project management (VSCode:-like project switcher)
+  {
+    "ahmedkhalf/project.nvim",
+    lazy = false,
+    config = function()
+      require("project_nvim").setup {
+        -- Show recent projects in Telescope
+        manual_mode = false,
+
+        -- Detection methods to find project root
+        detection_methods = { "pattern", "lsp" },
+
+        -- Patterns to find project root (sorted by priority)
+        patterns = {
+          ".git",
+          "_darcs",
+          ".hg",
+          ".bzr",
+          ".svn",
+          "Makefile",
+          "package.json",
+          "go.mod",
+          "Cargo.toml",
+          "composer.json",
+          "pom.xml",
+          "build.gradle",
+          "CMakeLists.txt",
+        },
+
+        -- Don't show hidden files in project root
+        show_hidden = false,
+
+        -- Silent the notification when changing directory
+        silent_chdir = false,
+
+        -- Ignore certain paths
+        ignore_lsp = {},
+        exclude_dirs = {
+          "~/",
+          "~/.config/*",
+          "~/.local/*",
+          "/usr/*",
+          "/var/*",
+          "/tmp/*",
+        },
+
+        -- Path to store project history
+        datapath = vim.fn.stdpath "data",
+      }
+
+      -- Load Telescope extension for projects
+      require("telescope").load_extension "projects"
+
+      -- Function to delete projects from history
+      local function delete_project()
+        local project_nvim = require "project_nvim"
+        local history = require "project_nvim.utils.history"
+        local projects = history.get_recent_projects()
+
+        if #projects == 0 then
+          vim.notify("No projects in history", vim.log.levels.WARN)
+          return
+        end
+
+        vim.ui.select(projects, {
+          prompt = "Select project to delete from history:",
+        }, function(choice)
+          if choice then
+            history.delete_project(choice)
+            vim.notify("Deleted project: " .. choice, vim.log.levels.INFO)
+          end
+        end)
+      end
+
+      -- Create a user command to delete projects
+      vim.api.nvim_create_user_command("ProjectDelete", delete_project, {
+        desc = "Delete a project from recent history",
+      })
+    end,
+    dependencies = {
+      "nvim-telescope/telescope.nvim",
+    },
+    keys = {
+      { "<leader>p", "<cmd>Telescope projects<CR>", desc = "Switch project" },
+      { "<leader>P", "<cmd>ProjectRoot<CR>", desc = "Add current dir as project" },
+      { "<leader>xp", "<cmd>ProjectDelete<CR>", desc = "Delete project from history" },
+    },
+  },
+
+  -- Aerial.nvim - Code structure sidebar
+  {
+    "stevearc/aerial.nvim",
+    lazy = false, -- Load on startup so commands are available immediately
+    config = function()
+      require("aerial").setup {
+        -- Auto-open on file open (set to false for on-demand only)
+        auto_open = false,
+
+        -- Auto-close aerial when switching files
+        auto_close = true,
+
+        -- Show hierarchy on the left side
+        placement = "left",
+
+        -- Whether to display columns for symbols
+        show_columns = false,
+
+        -- Keymaps in aerial
+        attach_mode = "global",
+
+        -- Backends to use (treesitter is fastest, lsp is most accurate)
+        backends = { "treesitter", "lsp" },
+
+        -- Filter symbols to show
+        filter_kind = false,
+
+        -- How to draw icons for different symbol kinds
+        icons = {
+          Namespace = "󰜺",
+          Package = "󰆦",
+          Class = "󰣕",
+          Method = "󰆧",
+          Property = "󰆧",
+          Field = "󰆧",
+          Constructor = "󰆧",
+          Enum = "󰕔",
+          Interface = "󰕔",
+          Function = "󰆧",
+          Variable = "󰀌",
+          Constant = "󰀌",
+          String = "󰀌",
+          Number = "󰀌",
+          Boolean = "󰀌",
+          Array = "󰅩",
+          Object = "󰅩",
+          Key = "󰅩",
+          Null = "󰀌",
+          EnumMember = "󰕔",
+          Struct = "󰣕",
+          Event = "󰕔",
+          Operator = "󰕔",
+          TypeParameter = "󰕔",
+          Component = "󰆧",
+          Fragment = "󰆧",
+          Type = "󰣕",
+          InlineNode = "󰆧",
+          Generic = "󰕔",
+        },
+
+        -- Telescope integration
+        telescope = {
+          -- Use telescope for fuzzy filtering symbols
+          show_nesting = true,
+        },
+
+        -- Keymaps when aerial is open
+        keymaps = {
+          ["<leader>aa"] = "actions.toggle",
+          ["<leader>aj"] = "actions.tree_open",
+          ["<leader>ac"] = "actions.tree_close",
+          ["<leader>an"] = "actions.next_entry",
+          ["<leader>ap"] = "actions.prev_entry",
+          ["<leader>aq"] = "actions.select",
+          ["<leader>ax"] = "actions.close",
+        },
+      }
+
+      -- Load telescope extension for aerial
+      require("telescope").load_extension "aerial"
+    end,
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      "nvim-telescope/telescope.nvim",
+    },
+  },
+
   -- DAP for debugging
   {
     "mfussenegger/nvim-dap",

@@ -68,6 +68,24 @@ map("n", "x", '"_x')
 -- The "Greatest Move": Paste over highlighted text without losing your original yank
 map("v", "p", '"_dP')
 
+-- Project management (VSCode:-like project switcher)
+map("n", "<leader>p", "<cmd>Telescope projects<CR>", { desc = "Switch project (recent projects)" })
+map("n", "<leader>P", "<cmd>ProjectRoot<CR>", { desc = "Add current dir as project" })
+map("n", "<leader>xp", "<cmd>ProjectDelete<CR>", { desc = "Delete project from history" })
+
+-- LSP navigation and references
+map("n", "gd", vim.lsp.buf.definition, { desc = "Go to definition" })
+map("n", "gD", vim.lsp.buf.declaration, { desc = "Go to declaration" })
+map("n", "gr", "<cmd>Telescope lsp_references<CR>", { desc = "Find references (where symbol is used)" })
+map("n", "gI", "<cmd>Telescope lsp_implementations<CR>", { desc = "Find implementations" })
+map("n", "gt", "<cmd>Telescope lsp_type_definitions<CR>", { desc = "Go to type definition" })
+map("n", "<leader>rn", vim.lsp.buf.rename, { desc = "Rename symbol" })
+map("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code actions" })
+
+-- Aerial.nvim - Code structure sidebar
+map("n", "<leader>aa", "<cmd>AerialToggle<CR>", { desc = "Toggle Aerial (code structure)" })
+map("n", "<leader>aS", "<cmd>Telescope aerial<CR>", { desc = "Search symbols via Aerial" })
+
 -- Open chat for the current selection
 -- map("v", "<leader>ai", function()
 --   local input = vim.fn.input "Chat about selection: "
