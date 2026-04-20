@@ -687,6 +687,34 @@ return {
           processId = require("dap.utils").pick_process,
         },
       }
+
+      -- Auto-refresh dapui breakpoints when toggling
+      local function refresh_dapui()
+        vim.schedule(function()
+          local ok, dapui = pcall(require, "dapui")
+          if ok and dapui and dapui.elements and dapui.elements.breakpoints then
+            pcall(dapui.elements.breakpoints.render)
+          end
+        end)
+      end
+
+      local original_toggle_breakpoint = dap.toggle_breakpoint
+      dap.toggle_breakpoint = function(...)
+        original_toggle_breakpoint(...)
+        refresh_dapui()
+      end
+
+      local original_clear_breakpoints = dap.clear_breakpoints
+      dap.clear_breakpoints = function(...)
+        original_clear_breakpoints(...)
+        refresh_dapui()
+      end
+
+      local original_set_breakpoint = dap.set_breakpoint
+      dap.set_breakpoint = function(...)
+        original_set_breakpoint(...)
+        refresh_dapui()
+      end
     end,
   },
   {
