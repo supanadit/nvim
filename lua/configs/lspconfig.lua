@@ -37,9 +37,40 @@ for _, lsp in ipairs(servers) do
   end
 end
 
+local yaml_schemas = vim.deepcopy(require("schemastore").yaml.schemas())
+
+local extra_schemas = {
+  ["https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.29.0-standalone-strict/deployment.json"] = {
+    "*.deployment.yaml",
+    "*.statefulset.yaml",
+    "*.daemonset.yaml",
+    "*.replicaset.yaml",
+    "*.pod.yaml",
+    "*.service.yaml",
+    "*.configmap.yaml",
+    "*.secret.yaml",
+    "*.ingress.yaml",
+    "*.job.yaml",
+    "*.cronjob.yaml",
+    "*.k8s.yaml",
+    "*.kubernetes.yaml",
+    "kustomization.yaml",
+    "kustomize.yaml",
+  },
+  ["https://json.schemastore.org/docker-compose.json"] = {
+    "docker-compose.yaml",
+    "docker-compose.yml",
+    "compose.yaml",
+    "compose.yml",
+  },
+}
+
+for url, patterns in pairs(extra_schemas) do
+  yaml_schemas[url] = patterns
+end
+
 vim.lsp.config("yamlls", {
   on_attach = function(client, bufnr)
-    -- Check if file contains YTT directives, if so detach LSP to avoid false errors
     local lines = vim.api.nvim_buf_get_lines(bufnr, 0, 50, false)
     for _, line in ipairs(lines) do
       if line:match "^#@" or line:match "^#!" then
@@ -52,12 +83,15 @@ vim.lsp.config("yamlls", {
   capabilities = nvlsp.capabilities,
   settings = {
     yaml = {
-      schemas = {
-        -- This tells the LSP: "If the file is YAML, use Kubernetes rules"
-        ["kubernetes"] = "*.yaml",
-        -- You can also add specific patterns for other things:
-        ["https://json.schemastore.org/github-workflow.json"] = ".github/workflows/*",
+      schemaStore = {
+        enable = true,
+        url = "https://www.schemastore.org/api/json/catalog.json",
       },
+      validate = true,
+      format = {
+        enable = true,
+      },
+      schemas = yaml_schemas,
     },
   },
 })

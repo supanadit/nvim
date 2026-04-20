@@ -15,7 +15,6 @@ return {
 
   {
     "b0o/SchemaStore.nvim",
-    lazy = true,
   },
   {
     "nvim-tree/nvim-tree.lua",
@@ -252,6 +251,7 @@ return {
         "clang-tidy",
         "js-debug-adapter",
         "delve",
+        "yaml-language-server",
       },
     },
   },
