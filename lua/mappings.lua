@@ -19,6 +19,9 @@ map("n", "<leader>dr", "<cmd>lua require('dap').repl.open()<CR>", { desc = "Open
 
 map("n", "<leader>mp", "<cmd>MarkdownPreviewToggle<CR>", { desc = "Toggle Markdown Preview" })
 
+-- LSP Code Actions (Quick Fix - like VSCode's lightbulb popup)
+map("n", "<A-c>", vim.lsp.buf.code_action, { desc = "LSP Code Action (Quick Fix)" })
+
 -- EasyMotion Mappings
 -- Jump to anywhere with 2 characters (Similar to 's' in other plugins)
 map("n", "<leader><leader>s", "<Plug>(easymotion-sn)", { desc = "EasyMotion: 2-char search" })
