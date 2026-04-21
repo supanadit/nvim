@@ -2,7 +2,11 @@ require("nvchad.configs.lspconfig").defaults()
 
 local nvlsp = require "nvchad.configs.lspconfig"
 
-local capabilities = nvlsp.capabilities
+local capabilities = vim.tbl_deep_extend(
+  "force",
+  nvlsp.capabilities,
+  require("lsp-file-operations").default_capabilities()
+)
 
 -- Define the servers you want
 local servers = {
