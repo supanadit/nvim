@@ -73,6 +73,59 @@ map("n", "<leader>p", "<cmd>Telescope projects<CR>", { desc = "Switch project (r
 map("n", "<leader>P", "<cmd>ProjectRoot<CR>", { desc = "Add current dir as project" })
 map("n", "<leader>xp", "<cmd>ProjectDelete<CR>", { desc = "Delete project from history" })
 
+-- Buffer Management (VSCode-like Close Left/Right/Others)
+local function close_bufs_left()
+  local bufs = vim.api.nvim_list_bufs()
+  local curr = vim.api.nvim_get_current_buf()
+  local curr_idx = nil
+  for i, buf in ipairs(bufs) do
+    if buf == curr then
+      curr_idx = i
+      break
+    end
+  end
+  if curr_idx then
+    for i = 1, curr_idx - 1 do
+      if vim.api.nvim_buf_is_loaded(bufs[i]) then
+        vim.api.nvim_buf_delete(bufs[i], { force = false })
+      end
+    end
+  end
+end
+
+local function close_bufs_right()
+  local bufs = vim.api.nvim_list_bufs()
+  local curr = vim.api.nvim_get_current_buf()
+  local curr_idx = nil
+  for i, buf in ipairs(bufs) do
+    if buf == curr then
+      curr_idx = i
+      break
+    end
+  end
+  if curr_idx then
+    for i = curr_idx + 1, #bufs do
+      if vim.api.nvim_buf_is_loaded(bufs[i]) then
+        vim.api.nvim_buf_delete(bufs[i], { force = false })
+      end
+    end
+  end
+end
+
+local function close_bufs_others()
+  local bufs = vim.api.nvim_list_bufs()
+  local curr = vim.api.nvim_get_current_buf()
+  for _, buf in ipairs(bufs) do
+    if buf ~= curr and vim.api.nvim_buf_is_loaded(buf) then
+      vim.api.nvim_buf_delete(buf, { force = false })
+    end
+  end
+end
+
+map("n", "<leader>bl", close_bufs_left, { desc = "Close buffers to the left" })
+map("n", "<leader>br", close_bufs_right, { desc = "Close buffers to the right" })
+map("n", "<leader>bo", close_bufs_others, { desc = "Close all other buffers" })
+
 -- LSP navigation and references
 map("n", "gd", vim.lsp.buf.definition, { desc = "Go to definition" })
 map("n", "gD", vim.lsp.buf.declaration, { desc = "Go to declaration" })
